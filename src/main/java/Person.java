@@ -20,6 +20,7 @@ public class Person {
     public boolean hasAge() {
         return age > 0;
     }
+
     public boolean hasAddress() {
         return address != null;
     }
@@ -27,12 +28,15 @@ public class Person {
     public String getName() {
         return name;
     }
+
     public String getSurname() {
         return surname;
     }
+
     public OptionalInt getAge() {
-        return OptionalInt.of(age);
+        return OptionalInt.empty();
     }
+
     public String getAddress() {
         return address;
     }
@@ -40,6 +44,7 @@ public class Person {
     public void setAddress(String address) {
         this.address = address;
     }
+
     public void happyBirthday() {
         if (hasAge()) {
             age++;
@@ -48,10 +53,11 @@ public class Person {
 
     @Override
     public String toString() {
-        return  "имя - " + name + "\n" +
-            "Фамилия - " + surname + "\n" +
-            "Возраст - " + age + "\n" +
-            "Место жительства - " + address + "\n";}
+        return "имя - " + name + "\n" +
+                "Фамилия - " + surname + "\n" +
+                "Возраст - " + age + "\n" +
+                "Место жительства - " + address + "\n";
+    }
 
     @Override
     public int hashCode() {
