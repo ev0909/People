@@ -33,8 +33,8 @@ public class Person {
         return surname;
     }
 
-    public OptionalInt getAge() {
-        return OptionalInt.empty();
+    public int getAge() {
+        return age;
     }
 
     public String getAddress() {
