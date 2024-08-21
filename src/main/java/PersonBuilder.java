@@ -1,7 +1,9 @@
+import java.util.OptionalInt;
+
 public class PersonBuilder {
     private String name;
     private String surname;
-    private int age;
+    private OptionalInt age = OptionalInt.empty();
     private String address;
 
     public PersonBuilder setName(String name) throws IllegalArgumentException {
@@ -22,11 +24,11 @@ public class PersonBuilder {
         return this;
     }
 
-    public PersonBuilder setAge(int age) throws IllegalArgumentException {
-        if (age < 0) {
-            throw new IllegalArgumentException("Ошибка: Возраст не может быть отрицательным !");
+    public PersonBuilder setAge(int age) {
+        if (age >= 0 && age < 120) {
+            this.age = OptionalInt.of(age);
         } else {
-            this.age = age;
+            throw new IllegalArgumentException("Некорректно введён возраст !");
         }
         return this;
     }
@@ -36,20 +38,14 @@ public class PersonBuilder {
         return this;
     }
 
-    public Person build() throws IllegalArgumentException, IllegalStateException {
-        Person person;
-        if (name == null || name.isEmpty() || surname == null || surname.isEmpty()) {
-            throw new IllegalStateException("Ошибка: Данные введены не полностью !");
+    public Person build() {
+        if (name == null || surname == null || name.isEmpty() || surname.isEmpty()) {
+            throw new IllegalStateException("Данные указаны не полностью !");
+            } else if (age.isPresent()) {
+            return new Person(name, surname, age.getAsInt(), address);
+        } else {
+            return new Person(name, surname, address);
         }
-        if (age < 0) {
-            throw new IllegalArgumentException("Ошибка: Возраст не может быть отрицательным !");
-        } else person = new Person(name, surname, age);
-
-        person.setAddress(address);
-
-        return person;
-
     }
-
 
 }

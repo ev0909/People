@@ -1,10 +1,10 @@
 import java.util.OptionalInt;
 
 public class Person {
-    protected final String name;
-    protected final String surname;
-    protected int age;
-    protected String address;
+    private final String name;
+    private final String surname;
+    private OptionalInt age = OptionalInt.empty();
+    private String address;
 
     public Person(String name, String surname) {
         this.name = name;
@@ -14,15 +14,28 @@ public class Person {
     public Person(String name, String surname, int age) {
         this.name = name;
         this.surname = surname;
-        this.age = age;
+        this.age = OptionalInt.of(age);
+    }
+
+    public Person(String name, String surname, String address) {
+        this.name = name;
+        this.surname = surname;
+        this.address = address;
+    }
+
+    public Person(String name, String surname, int age, String address) {
+        this.name = name;
+        this.surname = surname;
+        this.age = OptionalInt.of(age);
+        this.address = address;
     }
 
     public boolean hasAge() {
-        return age > 0;
+        return age.isPresent();
     }
 
     public boolean hasAddress() {
-        return address != null;
+        return address != null && !address.isEmpty();
     }
 
     public String getName() {
@@ -33,7 +46,7 @@ public class Person {
         return surname;
     }
 
-    public int getAge() {
+    public OptionalInt getAge() {
         return age;
     }
 
@@ -41,31 +54,26 @@ public class Person {
         return address;
     }
 
-    public void setAddress(String address) {
+    public void setAddress(String city) {
         this.address = address;
     }
 
     public void happyBirthday() {
         if (hasAge()) {
-            age++;
+            age = OptionalInt.of(age.getAsInt() + 1);
         }
+    }
+
+    public PersonBuilder newChildBuilder() {
+        return new PersonBuilder().setSurname(surname).setAddress(address).setAge(0);
     }
 
     @Override
     public String toString() {
-        return "имя - " + name + "\n" +
-                "Фамилия - " + surname + "\n" +
-                "Возраст - " + age + "\n" +
-                "Место жительства - " + address + "\n";
+        return String.format("%s %s (Возраст:%s Город:%s)",
+                name,
+                surname,
+                (age.isPresent() ? age.getAsInt() : "неизвесто"),
+                (!address.isEmpty() ? address : "неизвестно"));
     }
-
-    @Override
-    public int hashCode() {
-        return hashCode();
-    }
-
-    public PersonBuilder newChildBuilder() {
-        return new PersonBuilder().setSurname(surname).setAddress(address);
-    }
-
 }
